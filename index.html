@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PawJakarta — Pet-Friendly Places & Dog Dating in Jakarta</title>
+  <meta name="description" content="Discover pet-friendly cafes, parks, malls in Jakarta. Plus PawMatch — swipe to find a mate for your dog." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <span class="nav-paw">🐾</span>
+        <span>PawJakarta</span>
+      </a>
+      <div class="nav-links">
+        <a href="#directory">Directory</a>
+        <a href="#pawmatch" class="nav-link-match">🐶 PawMatch</a>
+        <a href="#about">About</a>
+        <a href="#submit" class="nav-cta">Add a Place</a>
+      </div>
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <i class="ti ti-menu-2"></i>
+      </button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+      <a href="#directory">Directory</a>
+      <a href="#pawmatch">🐶 PawMatch</a>
+      <a href="#about">About</a>
+      <a href="#submit">Add a Place</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-blob hero-blob-1"></div>
+      <div class="hero-blob hero-blob-2"></div>
+      <div class="hero-dots"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="ti ti-map-pin"></i>
+        Jakarta, Indonesia
+      </div>
+      <h1 class="hero-title">
+        Every city stroll,<br/>
+        <em>better with your pet.</em>
+      </h1>
+      <p class="hero-sub">
+        Curated pet-friendly places across Jakarta — with photos, rules, hours, and pet size info. Plus PawMatch: swipe to find a mate for your dog. 🐾
+      </p>
+      <div class="hero-search-wrap">
+        <div class="hero-search">
+          <i class="ti ti-search"></i>
+          <input type="text" id="heroSearch" placeholder="Search cafes, parks, areas…" autocomplete="off" />
+          <button class="hero-search-btn" id="heroSearchBtn">
+            Search <i class="ti ti-arrow-right"></i>
+          </button>
+        </div>
+        <!-- Live search results dropdown -->
+        <div class="hero-search-results hidden" id="heroSearchResults"></div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-n" id="heroCount">10</span>
+          <span class="hero-stat-l">Verified places</span>
+        </div>
+        <div class="hero-stat-div"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-n">5</span>
+          <span class="hero-stat-l">Areas</span>
+        </div>
+        <div class="hero-stat-div"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-n" id="matchCount">24</span>
+          <span class="hero-stat-l">Dogs on PawMatch</span>
+        </div>
+      </div>
+      <div class="hero-ctas">
+        <a href="#directory" class="hero-cta-primary">Browse Places</a>
+        <a href="#pawmatch" class="hero-cta-match">🐶 Try PawMatch</a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint"><i class="ti ti-chevrons-down"></i></div>
+  </section>
+
+  <!-- DIRECTORY -->
+  <section class="directory" id="directory">
+    <div class="container">
+      <div class="dir-header">
+        <div class="section-label">Places Directory</div>
+        <h2 class="dir-title">Find a Pet-Friendly Spot</h2>
+        <p class="dir-sub">Browse, filter, and explore pet-friendly spots across the city.</p>
+      </div>
+
+      <div class="filter-row">
+        <div class="chips" id="chips" role="group" aria-label="Filter by category">
+          <button class="chip active" data-filter="all"><i class="ti ti-layout-grid"></i> All</button>
+          <button class="chip" data-filter="park"><i class="ti ti-trees"></i> Parks</button>
+          <button class="chip" data-filter="cafe"><i class="ti ti-coffee"></i> Cafés</button>
+          <button class="chip" data-filter="mall"><i class="ti ti-building-store"></i> Malls</button>
+          <button class="chip" data-filter="restaurant"><i class="ti ti-tools-kitchen-2"></i> Restaurants</button>
+          <button class="chip" data-filter="small"><i class="ti ti-dog"></i> Small pets OK</button>
+        </div>
+        <div class="filter-right">
+          <div class="dir-search-wrap">
+            <i class="ti ti-search"></i>
+            <input type="text" id="dirSearch" placeholder="Filter by name or area…" />
+          </div>
+          <select id="sortSelect" aria-label="Sort by">
+            <option value="default">Sort: Default</option>
+            <option value="alpha">A → Z</option>
+            <option value="area">By area</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="loading-state" id="loadingState">
+        <div class="spinner"></div>
+        <p>Loading places…</p>
+      </div>
+      <div class="error-state hidden" id="errorState">
+        <i class="ti ti-wifi-off"></i>
+        <p>Could not load live data. Showing cached data instead.</p>
+        <button onclick="fetchPlaces().then(renderGrid)">Try again</button>
+      </div>
+
+      <div class="places-grid" id="placesGrid"></div>
+
+      <div class="empty-state hidden" id="emptyState">
+        <div class="empty-icon">🔍</div>
+        <h3>No places found</h3>
+        <p>Try adjusting your search or filter.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLACE DETAIL MODAL -->
+  <div class="modal-overlay hidden" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose" aria-label="Close"><i class="ti ti-x"></i></button>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- PAWMATCH SECTION -->
+  <section class="pawmatch-section" id="pawmatch">
+    <div class="pawmatch-bg">
+      <div class="pawmatch-blob pm-blob-1"></div>
+      <div class="pawmatch-blob pm-blob-2"></div>
+    </div>
+    <div class="container">
+      <div class="pawmatch-header">
+        <div class="section-label pm-label">New Feature</div>
+        <h2 class="pawmatch-title">PawMatch 🐾</h2>
+        <p class="pawmatch-sub">Tinder for dogs. Swipe right to connect with compatible mates in Jakarta. Responsible breeding & social connections for your furry family.</p>
+      </div>
+
+      <div class="pawmatch-layout">
+        <!-- Swipe Card Stack -->
+        <div class="swipe-area">
+          <div class="swipe-stack" id="swipeStack">
+            <!-- Cards injected by JS -->
+          </div>
+          <div class="swipe-empty hidden" id="swipeEmpty">
+            <div class="swipe-empty-icon">🐾</div>
+            <h3>You've seen all dogs!</h3>
+            <p>Check back soon — more dogs are joining PawMatch.</p>
+            <button class="btn-reset-stack" onclick="resetStack()">Start over</button>
+          </div>
+          <div class="swipe-actions" id="swipeActions">
+            <button class="swipe-btn swipe-no" id="swipeNoBtn" aria-label="Pass" title="Pass">
+              <i class="ti ti-x"></i>
+            </button>
+            <div class="swipe-counter">
+              <span id="swipeIdx">1</span> / <span id="swipeTotal">8</span>
+            </div>
+            <button class="swipe-btn swipe-yes" id="swipeYesBtn" aria-label="Like" title="Like">
+              <i class="ti ti-heart"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right panel: My Dog + Matches -->
+        <div class="pawmatch-panel">
+          <!-- My Dog Profile -->
+          <div class="mydog-card">
+            <div class="mydog-header">
+              <h3>My Dog's Profile</h3>
+              <button class="btn-edit-dog" id="editDogBtn"><i class="ti ti-edit"></i> Edit</button>
+            </div>
+            <div class="mydog-body" id="myDogBody">
+              <!-- Filled by JS -->
+            </div>
+          </div>
+
+          <!-- Matches -->
+          <div class="matches-card">
+            <div class="matches-header">
+              <h3>💌 Matches</h3>
+              <span class="matches-count" id="matchesCount">0</span>
+            </div>
+            <div class="matches-list" id="matchesList">
+              <div class="matches-empty">Like a dog to get your first match!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOG PROFILE EDITOR MODAL -->
+  <div class="modal-overlay hidden" id="dogModalOverlay" role="dialog" aria-modal="true">
+    <div class="modal dog-modal" id="dogModal">
+      <button class="modal-close" id="dogModalClose" aria-label="Close"><i class="ti ti-x"></i></button>
+      <div class="dog-modal-body">
+        <h2>My Dog's Profile</h2>
+        <p class="dog-modal-sub">Tell us about your dog so others can find a good match.</p>
+        <div class="dog-form">
+          <div class="dog-avatar-picker">
+            <div class="dog-avatar-preview" id="dogAvatarPreview">🐕</div>
+            <div class="dog-avatar-options" id="dogAvatarOptions">
+              <button data-emoji="🐕">🐕</button><button data-emoji="🐩">🐩</button>
+              <button data-emoji="🦮">🦮</button><button data-emoji="🐕‍🦺">🐕‍🦺</button>
+              <button data-emoji="🐶">🐶</button><button data-emoji="🐈">🐈</button>
+              <button data-emoji="😺">😺</button><button data-emoji="🐈‍⬛">🐈‍⬛</button>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dog_name">Dog's Name *</label>
+              <input type="text" id="dog_name" placeholder="e.g. Mochi" />
+            </div>
+            <div class="form-group">
+              <label for="dog_breed">Breed *</label>
+              <input type="text" id="dog_breed" placeholder="e.g. Shiba Inu" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dog_age">Age</label>
+              <input type="text" id="dog_age" placeholder="e.g. 2 years" />
+            </div>
+            <div class="form-group">
+              <label for="dog_gender">Gender</label>
+              <select id="dog_gender">
+                <option value="Female">Female 🩷</option>
+                <option value="Male">Male 💙</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dog_size">Size</label>
+              <select id="dog_size">
+                <option value="Small">Small (under 10kg)</option>
+                <option value="Medium">Medium (10–25kg)</option>
+                <option value="Large">Large (25kg+)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="dog_area">Your Area</label>
+              <input type="text" id="dog_area" placeholder="e.g. Kemang" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="dog_bio">Bio</label>
+            <textarea id="dog_bio" rows="2" placeholder="Describe your dog's personality…"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="owner_contact">Your Contact (WhatsApp / IG)</label>
+            <input type="text" id="owner_contact" placeholder="e.g. @username or +62…" />
+          </div>
+          <button class="btn-save-dog" id="saveDogBtn">Save Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="container about-grid">
+      <div class="about-text">
+        <div class="section-label">About PawJakarta</div>
+        <h2>Built for pet owners, <em>by pet owners.</em></h2>
+        <p>Jakarta's pet-friendly scene is growing fast — but information is scattered. PawJakarta brings it together: a verified directory plus PawMatch, a social layer to connect your dogs with compatible companions.</p>
+        <div class="about-chips">
+          <span><i class="ti ti-check"></i> Verified listings</span>
+          <span><i class="ti ti-check"></i> Updated 2025</span>
+          <span><i class="ti ti-check"></i> Free to use</span>
+          <span><i class="ti ti-check"></i> PawMatch beta</span>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-card"><div class="about-card-icon">🐕</div><div class="about-card-text"><strong>Dog-friendly</strong><span>Parks, cafés & more</span></div></div>
+        <div class="about-card"><div class="about-card-icon">🐈</div><div class="about-card-text"><strong>Cat-friendly</strong><span>Select indoor spots</span></div></div>
+        <div class="about-card about-card-accent"><div class="about-card-icon">💞</div><div class="about-card-text"><strong>PawMatch</strong><span>Dog dating & social</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBMIT -->
+  <section class="submit-section" id="submit">
+    <div class="container">
+      <div class="submit-card">
+        <div class="submit-left">
+          <div class="section-label">Community-powered</div>
+          <h2>Know a great spot?</h2>
+          <p>Submit a place and we'll verify and add it to the directory.</p>
+        </div>
+        <form class="submit-form" id="submitForm" novalidate>
+          <div class="form-row">
+            <div class="form-group"><label for="f_name">Place name *</label><input type="text" id="f_name" placeholder="e.g. Como Park" required /></div>
+            <div class="form-group"><label for="f_area">Area / District *</label><input type="text" id="f_area" placeholder="e.g. Kemang, South Jakarta" required /></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label for="f_type">Type *</label><select id="f_type" required><option value="">Select…</option><option value="park">Park</option><option value="cafe">Café</option><option value="mall">Mall</option><option value="restaurant">Restaurant</option><option value="other">Other</option></select></div>
+            <div class="form-group"><label for="f_petsize">Pet size</label><select id="f_petsize"><option value="All sizes">All sizes</option><option value="Small only">Small only</option><option value="Medium & small">Medium & small</option></select></div>
+          </div>
+          <div class="form-group"><label for="f_address">Full address</label><input type="text" id="f_address" placeholder="Jl. …" /></div>
+          <div class="form-group"><label for="f_hours">Opening hours</label><input type="text" id="f_hours" placeholder="e.g. Mon–Sun 10:00 AM – 10:00 PM" /></div>
+          <div class="form-group"><label for="f_rules">Rules & regulations</label><textarea id="f_rules" rows="3" placeholder="e.g. Leash required; diapers for indoor areas…"></textarea></div>
+          <div class="form-group"><label for="f_notes">Additional notes</label><textarea id="f_notes" rows="2" placeholder="Anything useful for other pet owners…"></textarea></div>
+          <div class="form-submit-row">
+            <p class="form-note"><i class="ti ti-info-circle"></i> Submissions go to our Google Sheet for review.</p>
+            <button type="submit" class="btn-submit" id="submitBtn"><span id="submitBtnText">Submit Place</span><i class="ti ti-send"></i></button>
+          </div>
+          <div class="form-success hidden" id="formSuccess"><i class="ti ti-circle-check"></i><span id="formSuccessMsg">Thanks! Your submission has been received.</span></div>
+          <div class="form-error hidden" id="formError"><i class="ti ti-alert-circle"></i><span id="formErrorMsg">Please fill in all required fields.</span></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="nav-paw">🐾</span>
+        <div><strong>PawJakarta</strong><p>The pet owner's guide to Jakarta</p></div>
+      </div>
+      <div class="footer-links">
+        <a href="#directory">Directory</a>
+        <a href="#pawmatch">PawMatch</a>
+        <a href="#about">About</a>
+        <a href="#submit">Submit a Place</a>
+      </div>
+      <p class="footer-note">Data sourced from public listings. Always verify with the venue before visiting. PawMatch connections are facilitated between owners — please practice responsible breeding. © 2025 PawJakarta.</p>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/pawmatch.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
