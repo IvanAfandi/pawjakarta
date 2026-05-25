@@ -35,7 +35,7 @@ const CONFIG = {
    * Get from: Apps Script → Deploy → Web App → Copy URL
    * Replace the URL below with yours:
    */
-  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyBatlO-Z8-WZp57UzyIJp9PixAlc8LxXon2JGzN_Ad3_0ZQsXQZpwLdiO9mSH9hnzo/exec",
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby7NOKgLt1fW2bsa_yqeBuSEsypwYlnb4R0I7ijKopPbhpsmgqZHwkoagHayyIToEIU/exec",
 
   /**
    * Fallback to bundled data if the sheet can't be reached
