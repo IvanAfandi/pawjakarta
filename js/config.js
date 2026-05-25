@@ -28,7 +28,7 @@ const CONFIG = {
    *
    * Replace the URL below with yours:
    */
-  SHEET_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRJaVZQI179a6jdnWKuxm47WruLWKPSZzPh8TCstvoRHaqcm-gMZSlE6hH9wS6Xqbq4Q2DkhukQO2XT/pubhtml",
+  SHEET_CSV_URL: "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/pub?gid=0&single=true&output=csv",
 
   /**
    * WRITE — Google Apps Script Web App URL
