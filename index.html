@@ -158,81 +158,57 @@
       <div class="pawmatch-blob pm-blob-2"></div>
     </div>
     <div class="container">
+
       <div class="pawmatch-header">
-        <div class="section-label pm-label">New Feature</div>
-        <h2 class="pawmatch-title">PawMatch 🐾</h2>
-        <p class="pawmatch-sub">Tinder for dogs. Swipe right to connect with compatible mates in Jakarta. Responsible breeding & social connections for your furry family.</p>
-      </div>
-
-      <div class="pawmatch-layout">
-        <!-- Swipe Card Stack -->
-        <div class="swipe-area">
-          <div class="swipe-stack" id="swipeStack">
-            <!-- Cards injected by JS -->
-          </div>
-          <div class="swipe-empty hidden" id="swipeEmpty">
-            <div class="swipe-empty-icon">🐾</div>
-            <h3>You've seen all dogs!</h3>
-            <p>Check back soon — more dogs are joining PawMatch.</p>
-            <button class="btn-reset-stack" onclick="resetStack()">Start over</button>
-          </div>
-          <div class="swipe-actions" id="swipeActions">
-            <button class="swipe-btn swipe-no" id="swipeNoBtn" aria-label="Pass" title="Pass">
-              <i class="ti ti-x"></i>
-            </button>
-            <div class="swipe-counter">
-              <span id="swipeIdx">1</span> / <span id="swipeTotal">8</span>
-            </div>
-            <button class="swipe-btn swipe-yes" id="swipeYesBtn" aria-label="Like" title="Like">
-              <i class="ti ti-heart"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Right panel: My Dog + Matches -->
-        <div class="pawmatch-panel">
-          <!-- My Dog Profile -->
-          <div class="mydog-card">
-            <div class="mydog-header">
-              <h3>My Dog's Profile</h3>
-              <button class="btn-edit-dog" id="editDogBtn"><i class="ti ti-edit"></i> Edit</button>
-            </div>
-            <div class="mydog-body" id="myDogBody">
-              <!-- Filled by JS -->
-            </div>
-          </div>
-
-          <!-- Matches -->
-          <div class="matches-card">
-            <div class="matches-header">
-              <h3>💌 Matches</h3>
-              <span class="matches-count" id="matchesCount">0</span>
-            </div>
-            <div class="matches-list" id="matchesList">
-              <div class="matches-empty">Like a dog to get your first match!</div>
-            </div>
+        <div class="section-label pm-label">✨ New Feature</div>
+        <h2 class="pawmatch-title">PawMatch</h2>
+        <p class="pawmatch-sub">Discover dogs looking for a companion in Jakarta. Browse profiles, read their story, and connect with owners directly — responsible breeding made easy.</p>
+        <div class="pm-header-actions">
+          <button class="btn-list-dog" id="listMyDogBtn">
+            <i class="ti ti-circle-plus"></i> List My Dog
+          </button>
+          <div class="pm-filter-chips" id="pmFilterChips">
+            <button class="pm-chip active" data-gender="all">All</button>
+            <button class="pm-chip" data-gender="Male">💙 Male</button>
+            <button class="pm-chip" data-gender="Female">🩷 Female</button>
           </div>
         </div>
       </div>
+
+      <!-- Profile Grid -->
+      <div class="pm-grid" id="pmGrid">
+        <!-- Injected by JS -->
+      </div>
+
     </div>
   </section>
 
-  <!-- DOG PROFILE EDITOR MODAL -->
+  <!-- DOG PROFILE DETAIL MODAL -->
+  <div class="modal-overlay hidden" id="dogProfileOverlay" role="dialog" aria-modal="true" aria-labelledby="dogProfileTitle">
+    <div class="modal dog-profile-modal" id="dogProfileModal">
+      <button class="modal-close" id="dogProfileClose" aria-label="Close"><i class="ti ti-x"></i></button>
+      <div id="dogProfileBody"></div>
+    </div>
+  </div>
+
+  <!-- LIST MY DOG MODAL -->
   <div class="modal-overlay hidden" id="dogModalOverlay" role="dialog" aria-modal="true">
     <div class="modal dog-modal" id="dogModal">
       <button class="modal-close" id="dogModalClose" aria-label="Close"><i class="ti ti-x"></i></button>
       <div class="dog-modal-body">
-        <h2>My Dog's Profile</h2>
-        <p class="dog-modal-sub">Tell us about your dog so others can find a good match.</p>
+        <h2>List My Dog on PawMatch</h2>
+        <p class="dog-modal-sub">Create a profile so other owners can discover your dog.</p>
         <div class="dog-form">
-          <div class="dog-avatar-picker">
-            <div class="dog-avatar-preview" id="dogAvatarPreview">🐕</div>
-            <div class="dog-avatar-options" id="dogAvatarOptions">
-              <button data-emoji="🐕">🐕</button><button data-emoji="🐩">🐩</button>
-              <button data-emoji="🦮">🦮</button><button data-emoji="🐕‍🦺">🐕‍🦺</button>
-              <button data-emoji="🐶">🐶</button><button data-emoji="🐈">🐈</button>
-              <button data-emoji="😺">😺</button><button data-emoji="🐈‍⬛">🐈‍⬛</button>
+          <div class="dog-photo-picker">
+            <div class="dog-photo-preview" id="dogPhotoPreview">
+              <span class="dog-photo-placeholder" id="dogPhotoPlaceholder">🐕</span>
+              <img id="dogPhotoImg" src="" alt="Dog photo" style="display:none" />
             </div>
+            <label class="dog-photo-upload-btn" for="dogPhotoInput">
+              <i class="ti ti-camera"></i> Upload Photo
+              <input type="file" id="dogPhotoInput" accept="image/*" style="display:none" />
+            </label>
+            <p class="dog-photo-hint">JPG or PNG, square crop recommended</p>
           </div>
           <div class="form-row">
             <div class="form-group">
@@ -267,19 +243,25 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="dog_area">Your Area</label>
+              <label for="dog_area">Your Area *</label>
               <input type="text" id="dog_area" placeholder="e.g. Kemang" />
             </div>
           </div>
           <div class="form-group">
-            <label for="dog_bio">Bio</label>
-            <textarea id="dog_bio" rows="2" placeholder="Describe your dog's personality…"></textarea>
+            <label for="dog_funfact">Fun Fact *</label>
+            <input type="text" id="dog_funfact" placeholder="e.g. Can open the fridge door 🧊" />
           </div>
           <div class="form-group">
-            <label for="owner_contact">Your Contact (WhatsApp / IG)</label>
-            <input type="text" id="owner_contact" placeholder="e.g. @username or +62…" />
+            <label for="dog_bio">About Me</label>
+            <textarea id="dog_bio" rows="2" placeholder="Describe your dog's personality, what they're looking for…"></textarea>
           </div>
-          <button class="btn-save-dog" id="saveDogBtn">Save Profile</button>
+          <div class="form-group">
+            <label for="owner_contact">Owner Contact (WhatsApp / Instagram) *</label>
+            <input type="text" id="owner_contact" placeholder="e.g. @username or +62812…" />
+          </div>
+          <button class="btn-save-dog" id="saveDogBtn">
+            <i class="ti ti-circle-check"></i> Publish Profile
+          </button>
         </div>
       </div>
     </div>
