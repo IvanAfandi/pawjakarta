@@ -271,7 +271,7 @@ function initScrollObserver() {
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("visible"); obs.unobserve(e.target); } });
   }, { threshold:0.1 });
-  document.querySelectorAll(".about-grid, .submit-card, .pawmatch-layout").forEach(el => obs.observe(el));
+  document.querySelectorAll(".about-grid, .submit-card, .pm-grid, .pawmatch-header").forEach(el => obs.observe(el));
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────

@@ -28,14 +28,14 @@ const CONFIG = {
    *
    * Replace the URL below with yours:
    */
-  SHEET_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRJaVZQI179a6jdnWKuxm47WruLWKPSZzPh8TCstvoRHaqcm-gMZSlE6hH9wS6Xqbq4Q2DkhukQO2XT/pub?gid=0&single=true&output=csv",
+  SHEET_CSV_URL: "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/pub?gid=0&single=true&output=csv",
 
   /**
    * WRITE — Google Apps Script Web App URL
    * Get from: Apps Script → Deploy → Web App → Copy URL
    * Replace the URL below with yours:
    */
-  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby7NOKgLt1fW2bsa_yqeBuSEsypwYlnb4R0I7ijKopPbhpsmgqZHwkoagHayyIToEIU/exec",
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec",
 
   /**
    * Fallback to bundled data if the sheet can't be reached
