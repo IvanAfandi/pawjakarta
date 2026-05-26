@@ -813,273 +813,460 @@ body {
 .modal-thumb { width:100%; height:220px; overflow:hidden; border-radius:var(--radius-xl) var(--radius-xl) 0 0; }
 .modal-thumb img { width:100%; height:100%; object-fit:cover; }
 
-/* ══════════════════════════════════════════════════════════════════════════
-   PAWMATCH SECTION
-   ══════════════════════════════════════════════════════════════════════════ */
-.pawmatch-section {
-  padding:100px 0; position:relative; overflow:hidden;
-  background:linear-gradient(180deg,#fff9f9 0%,#fff 100%);
-}
-.pawmatch-bg { position:absolute; inset:0; pointer-events:none; }
-.pawmatch-blob {
-  position:absolute; border-radius:50%; filter:blur(90px); opacity:0.12;
-}
-.pm-blob-1 { width:500px; height:500px; background:#FF6B9D; top:-80px; right:-100px; animation:float1 14s ease-in-out infinite; }
-.pm-blob-2 { width:350px; height:350px; background:var(--amber); bottom:0; left:-60px; animation:float2 16s ease-in-out infinite; }
 
-.pawmatch-header { text-align:center; margin-bottom:56px; position:relative; z-index:1; }
-.pm-label { color:#FF6B9D !important; }
+/* ══════════════════════════════════════════════════════════════════════════
+   PAWMATCH v3 — CV Profile Directory
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Section shell ──────────────────────────────────────────────────────── */
+.pawmatch-section {
+  padding: 100px 0 120px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(170deg, #fff6f8 0%, #ffffff 60%);
+}
+.pawmatch-bg { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.pawmatch-blob { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.10; }
+.pm-blob-1 { width: 600px; height: 600px; background: #FF6B9D; top: -140px; right: -160px; animation: float1 14s ease-in-out infinite; }
+.pm-blob-2 { width: 400px; height: 400px; background: var(--amber); bottom: -60px; left: -80px; animation: float2 18s ease-in-out infinite; }
+
+/* ─── Header ─────────────────────────────────────────────────────────────── */
+.pawmatch-header {
+  text-align: center;
+  margin-bottom: 56px;
+  position: relative; z-index: 1;
+}
+.pm-label { color: #e05585 !important; letter-spacing: 0.8px; }
+
 .pawmatch-title {
-  font-family:var(--font-display); font-size:clamp(36px,6vw,60px);
-  font-weight:500; margin-bottom:14px; line-height:1.1;
+  font-family: var(--font-display);
+  font-size: clamp(40px, 7vw, 72px);
+  font-weight: 500;
+  line-height: 1.05;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
 }
 .pawmatch-sub {
-  font-size:16px; color:var(--text-2); font-weight:300; max-width:540px; margin:0 auto;
-  line-height:1.7;
+  font-size: 17px; color: var(--text-2); font-weight: 300;
+  max-width: 560px; margin: 0 auto 32px; line-height: 1.75;
 }
 
-.pawmatch-layout {
-  display:grid; grid-template-columns:1fr 380px; gap:48px;
-  align-items:start; position:relative; z-index:1;
-  opacity:0; transform:translateY(24px);
-  transition:opacity 0.6s ease, transform 0.6s ease;
-}
-.pawmatch-layout.visible { opacity:1; transform:translateY(0); }
-
-/* ─── Swipe Stack ────────────────────────────────────────────────────────── */
-.swipe-area { display:flex; flex-direction:column; align-items:center; gap:28px; }
-
-.swipe-stack {
-  position:relative; width:340px; height:460px;
-  user-select:none; -webkit-user-select:none;
+.pm-header-actions {
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; flex-wrap: wrap;
 }
 
-.swipe-card {
-  position:absolute; inset:0;
-  border-radius:24px;
-  transition:transform 0.3s ease, opacity 0.3s ease;
-  will-change:transform;
+.btn-list-dog {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF8E53 100%);
+  color: #fff; border: none; border-radius: 30px;
+  padding: 12px 24px; font-family: var(--font-body);
+  font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: opacity 0.15s, transform 0.15s;
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.3);
 }
-.swipe-card-top { cursor:grab; }
-.swipe-card-top:active { cursor:grabbing; }
-.swipe-card-inner {
-  width:100%; height:100%; border-radius:24px;
-  display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
-  padding:24px; position:relative; overflow:hidden;
-  box-shadow:0 8px 40px rgba(0,0,0,0.12);
+.btn-list-dog:hover { opacity: 0.92; transform: translateY(-1px); }
+.btn-list-dog i { font-size: 18px; }
+
+.pm-filter-chips {
+  display: flex; gap: 6px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 30px; padding: 4px;
+}
+.pm-chip {
+  padding: 7px 18px; border-radius: 26px; border: none;
+  font-family: var(--font-body); font-size: 13px; font-weight: 500;
+  color: var(--text-2); background: transparent;
+  cursor: pointer; transition: all 0.18s;
+}
+.pm-chip.active {
+  background: #fff; color: var(--text-1);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  font-weight: 600;
 }
 
-.swipe-card-emoji {
-  position:absolute; top:0; left:0; right:0;
-  display:flex; align-items:center; justify-content:center;
-  font-size:clamp(100px,30vw,140px);
-  height:60%; pointer-events:none;
-  line-height:1;
-  animation:petFloat 3s ease-in-out infinite;
-}
-@keyframes petFloat {
-  0%,100% { transform:translateY(0); }
-  50% { transform:translateY(-8px); }
+/* ─── Profile Grid ───────────────────────────────────────────────────────── */
+.pm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  position: relative; z-index: 1;
 }
 
-.swipe-like-stamp, .swipe-pass-stamp {
-  position:absolute; top:28px;
-  font-size:22px; font-weight:800; letter-spacing:2px;
-  padding:6px 16px; border-radius:8px; opacity:0;
-  transition:opacity 0.1s; transform:rotate(-15deg);
-  border:3px solid;
+/* ─── Profile Card ───────────────────────────────────────────────────────── */
+.pm-card {
+  background: var(--bg-card);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.34,1.3,0.64,1),
+              box-shadow 0.25s ease,
+              border-color 0.2s;
+  display: flex; flex-direction: column;
 }
-.swipe-like-stamp { right:20px; color:#22c55e; border-color:#22c55e; transform:rotate(15deg); }
-.swipe-pass-stamp { left:20px; color:#ef4444; border-color:#ef4444; transform:rotate(-15deg); }
+.pm-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.11);
+  border-color: #ffb3cf;
+}
+.pm-card:focus { outline: 3px solid #FF6B9D; outline-offset: 3px; }
 
-.swipe-card-info {
-  background:rgba(255,255,255,0.92); backdrop-filter:blur(8px);
-  border-radius:16px; padding:16px 18px; width:100%;
-  box-shadow:0 -2px 20px rgba(0,0,0,0.06);
+/* Card entry animation */
+.pm-card-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: pmCardIn 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
-.swipe-card-name-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
-.swipe-card-name-row h3 { font-size:22px; font-weight:700; color:var(--text-1); }
-.swipe-gender { font-size:20px; }
-.swipe-card-meta { font-size:13px; color:var(--text-2); margin-bottom:6px; }
-.swipe-dot { margin:0 4px; color:var(--text-3); }
-.swipe-card-area { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--text-3); margin-bottom:8px; }
-.swipe-card-area i { font-size:12px; }
-.swipe-card-bio { font-size:13px; color:var(--text-1); line-height:1.5; }
+@keyframes pmCardIn {
+  to { opacity: 1; transform: translateY(0); }
+}
 
-/* Swipe action buttons */
-.swipe-actions { display:flex; align-items:center; gap:24px; }
-.swipe-btn {
-  width:56px; height:56px; border-radius:50%; border:none;
-  display:flex; align-items:center; justify-content:center;
-  font-size:22px; cursor:pointer; transition:transform 0.15s, box-shadow 0.15s;
+/* Photo area */
+.pm-card-photo {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  background: #f5f5f3;
+  flex-shrink: 0;
 }
-.swipe-no {
-  background:#fff; color:#ef4444;
-  box-shadow:0 4px 20px rgba(239,68,68,0.2);
-  border:2px solid rgba(239,68,68,0.15);
+.pm-card-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.swipe-no:hover { transform:scale(1.1); box-shadow:0 6px 24px rgba(239,68,68,0.35); }
-.swipe-yes {
-  background:linear-gradient(135deg,#FF6B9D,#FF8E53);
-  color:#fff; box-shadow:0 4px 20px rgba(255,107,157,0.35);
-  width:64px; height:64px; font-size:26px;
-}
-.swipe-yes:hover { transform:scale(1.1); box-shadow:0 6px 28px rgba(255,107,157,0.5); }
-.swipe-counter { font-size:13px; color:var(--text-3); font-weight:500; }
+.pm-card:hover .pm-card-photo img { transform: scale(1.06); }
 
-/* Swipe empty state */
-.swipe-empty {
-  width:340px; height:460px; border-radius:24px;
-  background:var(--green-50); border:2px dashed var(--green-300);
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:12px; text-align:center; padding:32px;
+.pm-card-photo-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 72px;
 }
-.swipe-empty-icon { font-size:48px; }
-.swipe-empty h3 { font-size:18px; font-weight:600; }
-.swipe-empty p { font-size:14px; color:var(--text-2); }
-.btn-reset-stack {
-  background:var(--green-800); color:#fff; border:none; border-radius:30px;
-  padding:10px 22px; font-family:var(--font-body); font-size:14px; font-weight:600;
-  cursor:pointer; margin-top:8px; transition:background 0.15s;
-}
-.btn-reset-stack:hover { background:var(--green-700); }
 
-/* ─── Right Panel ────────────────────────────────────────────────────────── */
-.pawmatch-panel { display:flex; flex-direction:column; gap:20px; }
+.pm-card-photo-gradient {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 100px;
+  background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 100%);
+}
 
-/* My Dog card */
-.mydog-card {
-  background:var(--bg-card); border:1.5px solid var(--border);
-  border-radius:var(--radius-lg); padding:20px;
+.pm-card-photo-badges {
+  position: absolute; top: 12px; left: 12px;
+  display: flex; gap: 6px; flex-wrap: wrap;
 }
-.mydog-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
-.mydog-header h3 { font-size:15px; font-weight:600; }
-.btn-edit-dog {
-  display:flex; align-items:center; gap:5px;
-  background:none; border:1.5px solid var(--border-md);
-  border-radius:20px; padding:5px 12px;
-  font-family:var(--font-body); font-size:12px; font-weight:500;
-  color:var(--text-2); cursor:pointer; transition:all 0.15s;
-}
-.btn-edit-dog:hover { border-color:var(--green-500); color:var(--green-700); }
-.btn-edit-dog i { font-size:13px; }
-.mydog-empty { text-align:center; padding:20px 16px; }
-.mydog-empty-emoji { font-size:36px; margin-bottom:10px; }
-.mydog-empty p { font-size:13px; color:var(--text-2); margin-bottom:14px; }
-.btn-setup-dog {
-  background:linear-gradient(135deg,#FF6B9D,#FF8E53); color:#fff;
-  border:none; border-radius:30px; padding:10px 22px;
-  font-family:var(--font-body); font-size:13px; font-weight:600;
-  cursor:pointer; transition:opacity 0.15s;
-}
-.btn-setup-dog:hover { opacity:0.9; }
-.mydog-profile { display:flex; gap:14px; align-items:flex-start; }
-.mydog-avatar {
-  width:56px; height:56px; border-radius:14px; flex-shrink:0;
-  display:flex; align-items:center; justify-content:center; font-size:28px;
-}
-.mydog-details { flex:1; }
-.mydog-details h4 { font-size:16px; font-weight:700; margin-bottom:4px; }
-.mydog-details p { font-size:13px; color:var(--text-2); margin-bottom:3px; }
-.mydog-area { display:flex; align-items:center; gap:4px; }
-.mydog-area i { font-size:12px; }
-.mydog-bio { font-style:italic; color:var(--text-2) !important; }
-.mydog-contact { color:var(--green-700) !important; font-weight:500; }
 
-/* Matches card */
-.matches-card {
-  background:var(--bg-card); border:1.5px solid var(--border);
-  border-radius:var(--radius-lg); padding:20px;
+.pm-gender {
+  font-size: 11px; font-weight: 700; padding: 4px 11px;
+  border-radius: 20px; letter-spacing: 0.3px;
+  backdrop-filter: blur(6px);
 }
-.matches-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
-.matches-header h3 { font-size:15px; font-weight:600; }
-.matches-count {
-  background:linear-gradient(135deg,#FF6B9D,#FF8E53);
-  color:#fff; font-size:12px; font-weight:700;
-  padding:3px 10px; border-radius:20px; min-width:24px; text-align:center;
-}
-.matches-list { display:flex; flex-direction:column; gap:10px; max-height:280px; overflow-y:auto; }
-.matches-list::-webkit-scrollbar { width:4px; }
-.matches-list::-webkit-scrollbar-thumb { background:var(--border-md); border-radius:2px; }
-.matches-empty { text-align:center; font-size:13px; color:var(--text-3); padding:20px; }
-.match-item { display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:var(--radius-md); background:var(--bg); }
-.match-emoji {
-  width:40px; height:40px; border-radius:10px; flex-shrink:0;
-  display:flex; align-items:center; justify-content:center; font-size:20px;
-}
-.match-info { flex:1; min-width:0; }
-.match-info strong { display:block; font-size:13px; color:var(--text-1); }
-.match-info span { font-size:11px; color:var(--text-3); }
-.match-contact {
-  width:32px; height:32px; border-radius:50%;
-  background:var(--green-100); color:var(--green-700);
-  display:flex; align-items:center; justify-content:center;
-  font-size:15px; text-decoration:none; flex-shrink:0;
-  transition:background 0.15s;
-}
-.match-contact:hover { background:var(--green-300); }
+.pm-gender-f { background: rgba(255,182,209,0.88); color: #8B1A4A; }
+.pm-gender-m { background: rgba(179,214,255,0.88); color: #1A3A8B; }
 
-/* ─── Dog Profile Modal ──────────────────────────────────────────────────── */
-.dog-modal { max-width:520px; border-radius:var(--radius-xl); }
-.dog-modal-body { padding:32px; }
-.dog-modal-body h2 { font-size:22px; font-weight:600; margin-bottom:6px; }
-.dog-modal-sub { font-size:14px; color:var(--text-2); margin-bottom:24px; }
-.dog-form { display:flex; flex-direction:column; gap:14px; }
-.dog-avatar-picker { display:flex; flex-direction:column; align-items:center; gap:12px; margin-bottom:8px; }
-.dog-avatar-preview {
-  width:72px; height:72px; border-radius:18px; background:var(--green-100);
-  display:flex; align-items:center; justify-content:center; font-size:40px;
+.pm-badge-user {
+  font-size: 10px; font-weight: 700; padding: 4px 10px;
+  border-radius: 20px; background: rgba(45,106,79,0.88);
+  color: #fff; backdrop-filter: blur(4px);
+  letter-spacing: 0.3px;
 }
-.dog-avatar-options { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
-.dog-avatar-options button {
-  width:40px; height:40px; border-radius:10px; border:2px solid var(--border);
-  background:var(--bg); font-size:22px; cursor:pointer; transition:all 0.12s;
-  display:flex; align-items:center; justify-content:center;
+
+/* Card body */
+.pm-card-body {
+  padding: 18px 20px 20px;
+  display: flex; flex-direction: column; gap: 8px;
+  flex: 1;
 }
-.dog-avatar-options button:hover, .dog-avatar-options button.active {
-  border-color:var(--green-500); background:var(--green-50);
+.pm-card-name-row {
+  display: flex; align-items: baseline;
+  justify-content: space-between; gap: 8px;
 }
+.pm-card-name {
+  font-family: var(--font-display);
+  font-size: 22px; font-weight: 500; color: var(--text-1);
+  line-height: 1.1;
+}
+.pm-card-age {
+  font-size: 12px; color: var(--text-3); font-weight: 400;
+  white-space: nowrap;
+}
+.pm-card-breed {
+  font-size: 13px; color: var(--text-2); font-weight: 400;
+  margin-top: -4px;
+}
+
+.pm-card-funfact {
+  display: flex; align-items: flex-start; gap: 7px;
+  background: linear-gradient(135deg, #fff8f0 0%, #fff5f8 100%);
+  border-radius: 10px; padding: 9px 12px; margin: 2px 0;
+  border: 1px solid rgba(255, 150, 100, 0.15);
+}
+.pm-card-funfact i {
+  font-size: 14px; color: #e07830;
+  flex-shrink: 0; margin-top: 1px;
+}
+.pm-card-funfact span {
+  font-size: 12.5px; color: var(--text-1); line-height: 1.5; font-weight: 400;
+}
+
+.pm-card-location {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 12px; color: var(--text-3);
+}
+.pm-card-location i { font-size: 13px; color: var(--green-500); }
+
+.pm-card-cta {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  background: none;
+  border: 1.5px solid #ffb3cf;
+  border-radius: 30px; padding: 9px 16px;
+  font-family: var(--font-body); font-size: 13px; font-weight: 600;
+  color: #e05585; cursor: pointer;
+  margin-top: auto; padding-top: 11px;
+  transition: all 0.18s;
+  width: 100%;
+}
+.pm-card:hover .pm-card-cta,
+.pm-card-cta:hover {
+  background: #FF6B9D; color: #fff; border-color: #FF6B9D;
+}
+.pm-card-cta i { font-size: 14px; }
+
+/* Empty state */
+.pm-empty {
+  grid-column: 1 / -1;
+  text-align: center; padding: 80px 24px;
+  color: var(--text-2);
+}
+.pm-empty-icon { font-size: 48px; margin-bottom: 12px; }
+.pm-empty p { font-size: 15px; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DOG PROFILE DETAIL MODAL
+   ══════════════════════════════════════════════════════════════════════════ */
+.dog-profile-modal {
+  max-width: 560px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+/* Hero photo */
+.dp-hero {
+  position: relative;
+  height: 320px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.dp-photo {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.dp-photo-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 96px;
+}
+.dp-hero-overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 28px 28px 24px;
+  background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
+}
+.dp-hero-name h2 {
+  font-family: var(--font-display);
+  font-size: 34px; font-weight: 500;
+  color: #fff; line-height: 1.1; margin-bottom: 6px;
+}
+.dp-breed-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(4px);
+  color: #fff; font-size: 13px; font-weight: 500;
+  padding: 4px 12px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+/* Body */
+.dp-body {
+  padding: 24px 28px 32px;
+  display: flex; flex-direction: column; gap: 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.dp-body::-webkit-scrollbar { width: 4px; }
+.dp-body::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 2px; }
+
+/* Identity strip */
+.dp-identity {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.dp-id-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--bg);
+  border: 1.5px solid var(--border-md);
+  border-radius: 20px; padding: 6px 13px;
+  font-size: 13px; font-weight: 500; color: var(--text-1);
+}
+.dp-id-pill i { font-size: 13px; color: var(--text-3); }
+
+/* Fun fact block */
+.dp-funfact-block {
+  background: linear-gradient(135deg, #fff8ef 0%, #fff4f8 100%);
+  border-radius: 14px; padding: 16px 18px;
+  border: 1px solid rgba(255, 140, 80, 0.18);
+}
+.dp-funfact-label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.6px; color: #c96020; margin-bottom: 8px;
+}
+.dp-funfact-label i { font-size: 14px; }
+.dp-funfact-text {
+  font-size: 15px; color: var(--text-1); line-height: 1.6;
+  font-style: italic;
+}
+
+/* Section */
+.dp-section {}
+.dp-section-label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.6px; color: var(--text-3); margin-bottom: 8px;
+}
+.dp-section-label i { font-size: 14px; color: var(--green-500); }
+.dp-bio {
+  font-size: 15px; color: var(--text-1); line-height: 1.75;
+}
+
+/* Looking for */
+.dp-looking-for {
+  background: var(--green-50);
+  border: 1.5px solid var(--green-100);
+  border-radius: 14px; padding: 16px 18px;
+}
+.dp-lf-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.6px; color: var(--green-700); margin-bottom: 7px;
+}
+.dp-lf-text {
+  font-size: 14px; color: var(--text-1); line-height: 1.65;
+}
+
+/* Contact CTA block */
+.dp-contact-block {
+  background: var(--text-1);
+  border-radius: 16px; padding: 22px 24px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.dp-contact-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.7px; color: rgba(255,255,255,0.55);
+}
+.dp-contact-sub {
+  font-size: 14px; color: rgba(255,255,255,0.72); line-height: 1.65;
+}
+.dp-contact-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF8E53 100%);
+  color: #fff; text-decoration: none;
+  border-radius: 12px; padding: 14px 20px;
+  font-family: var(--font-body); font-size: 15px; font-weight: 600;
+  transition: opacity 0.15s, transform 0.15s;
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.4);
+}
+.dp-contact-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+.dp-contact-btn i { font-size: 18px; }
+.dp-contact-note {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: rgba(255,255,255,0.4);
+  margin-top: 2px;
+}
+.dp-contact-note i { font-size: 13px; color: rgba(255,255,255,0.35); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LIST MY DOG FORM MODAL
+   ══════════════════════════════════════════════════════════════════════════ */
+.dog-modal { max-width: 560px; border-radius: var(--radius-xl); }
+.dog-modal-body { padding: 32px; max-height: 90vh; overflow-y: auto; }
+.dog-modal-body::-webkit-scrollbar { width: 4px; }
+.dog-modal-body::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 2px; }
+.dog-modal-body h2 {
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 500; margin-bottom: 6px;
+}
+.dog-modal-sub { font-size: 14px; color: var(--text-2); margin-bottom: 24px; }
+.dog-form { display: flex; flex-direction: column; gap: 16px; }
+
+/* Photo picker */
+.dog-photo-picker {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.dog-photo-preview {
+  width: 120px; height: 120px; border-radius: 20px;
+  background: var(--bg);
+  border: 2px dashed var(--border-md);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; cursor: pointer;
+  transition: border-color 0.15s;
+  position: relative;
+}
+.dog-photo-preview.drag-over { border-color: #FF6B9D; background: #fff5f8; }
+.dog-photo-placeholder { font-size: 48px; }
+.dog-photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+.dog-photo-upload-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--bg); border: 1.5px solid var(--border-md);
+  border-radius: 30px; padding: 8px 18px;
+  font-family: var(--font-body); font-size: 13px; font-weight: 500;
+  color: var(--text-2); cursor: pointer; transition: all 0.15s;
+}
+.dog-photo-upload-btn:hover { border-color: var(--green-500); color: var(--green-700); }
+.dog-photo-upload-btn i { font-size: 16px; }
+.dog-photo-hint { font-size: 11px; color: var(--text-3); text-align: center; }
+
 .btn-save-dog {
-  background:linear-gradient(135deg,#FF6B9D,#FF8E53); color:#fff;
-  border:none; border-radius:30px; padding:13px;
-  font-family:var(--font-body); font-size:15px; font-weight:600;
-  cursor:pointer; transition:opacity 0.15s; margin-top:8px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF8E53 100%);
+  color: #fff; border: none; border-radius: 12px;
+  padding: 14px; font-family: var(--font-body);
+  font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: opacity 0.15s, transform 0.15s;
+  margin-top: 8px; width: 100%;
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.3);
 }
-.btn-save-dog:hover { opacity:0.9; }
-
-/* ─── Match Toast ────────────────────────────────────────────────────────── */
-.match-toast {
-  position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px);
-  background:linear-gradient(135deg,#FF6B9D,#FF8E53);
-  color:#fff; border-radius:16px; padding:14px 22px;
-  display:flex; align-items:center; gap:14px;
-  box-shadow:0 8px 32px rgba(255,107,157,0.4);
-  z-index:500; transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.35s;
-  opacity:0;
-  min-width:280px;
-}
-.match-toast.toast-show { transform:translateX(-50%) translateY(0); opacity:1; }
-.toast-emoji { font-size:28px; flex-shrink:0; }
-.match-toast strong { display:block; font-size:15px; font-weight:700; }
-.match-toast p { font-size:13px; opacity:0.9; margin:0; }
-
-/* ─── Keyboard hint for desktop ─────────────────────────────────────────── */
-.swipe-area::after {
-  content:"← Pass   Like →";
-  display:block; font-size:11px; color:var(--text-3);
-  letter-spacing:0.3px; text-align:center;
-}
+.btn-save-dog:hover { opacity: 0.92; transform: translateY(-1px); }
+.btn-save-dog i { font-size: 18px; }
 
 /* ─── Responsive PawMatch ────────────────────────────────────────────────── */
-@media (max-width:960px) {
-  .pawmatch-layout { grid-template-columns:1fr; }
-  .swipe-area { width:100%; }
-  .swipe-stack, .swipe-empty { width:min(340px,90vw); }
+@media (max-width: 860px) {
+  .pm-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+  .dp-hero { height: 260px; }
 }
 
-@media (max-width:640px) {
-  .pawmatch-section { padding:60px 0; }
-  .swipe-stack, .swipe-empty { height:420px; }
-  .dir-search-wrap input { width:120px; }
-  .filter-right { width:100%; }
+@media (max-width: 640px) {
+  .pawmatch-section { padding: 64px 0 80px; }
+  .pm-header-actions { flex-direction: column; gap: 12px; }
+  .pm-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .pm-card-photo { height: 180px; }
+  .pm-card-body { padding: 14px 14px 16px; }
+  .pm-card-name { font-size: 18px; }
+  .pm-card-funfact { padding: 8px 10px; }
+  .dp-body { padding: 18px 20px 24px; }
+  .dp-hero-name h2 { font-size: 26px; }
+  .dog-modal-body { padding: 24px 20px; }
 }
+
+@media (max-width: 400px) {
+  .pm-grid { grid-template-columns: 1fr; }
+}
+
+/* ─── Scroll reveal for PawMatch grid ───────────────────────────────────── */
+.pawmatch-header {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.pawmatch-header.visible { opacity: 1; transform: translateY(0); }
+.pm-grid {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s;
+}
+.pm-grid.visible { opacity: 1; transform: translateY(0); }
