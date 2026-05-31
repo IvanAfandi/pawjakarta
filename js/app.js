@@ -54,7 +54,7 @@ function renderGrid() {
     const meta = getTypeMeta(p.type);
     const rules = rulesArr(p.rules);
     const open = isLikelyOpen();
-    const thumb = getThumbnail(p.id);
+    const thumb = getThumbnail(p);
     const isSmall = (p.pet_size||"").toLowerCase().includes("small");
 
     return `
