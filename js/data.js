@@ -3,11 +3,20 @@
  * Google Sheets CSV fetch + thumbnail images + fallback data.
  */
 
-
-function getThumbnail(place) {
-  // Use sheet photo_url if available, fall back to hardcoded map
-  return place.photo_url || PLACE_THUMBNAILS[String(place.id)] || null;
-}
+// Place thumbnails — sourced from Unsplash (free, no attribution required for UI use)
+// Keys match place `id` field. Replace with actual venue photos once available.
+const PLACE_THUMBNAILS = {
+  "1":  "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",  // dog park grass
+  "2":  "https://images.unsplash.com/photo-1555636222-cae831e670b3?w=600&q=80",  // outdoor mall
+  "3":  "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80", // restaurant outdoor
+  "4":  "https://images.unsplash.com/photo-1567521464027-f127ff144326?w=600&q=80", // mall avenue
+  "5":  "https://images.unsplash.com/photo-1600804931749-2da4ce26c869?w=600&q=80", // park sunset
+  "6":  "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80", // cafe interior
+  "7":  "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80", // coffee roastery
+  "8":  "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80", // mall interior
+  "9":  "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&q=80",  // dog swimming
+  "10": "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=600&q=80", // gelato
+};
 
 const FALLBACK_DATA = [
   { id:"1",  name:"Como Park",                        area:"Kemang, South Jakarta",         type:"park",       address:"Jl. Kemang Timur No.15 998, Bangka, Mampang Prapatan, South Jakarta 12730", hours:"Daily, approx. 10:00 AM – 10:00 PM", pet_size:"All sizes",                    rules:"Dogs may go off-leash inside the enclosed dog park;Vaccination recommended;Clean up after your pet;Well-behaved pets only",                                         notes:"Community hub with cafés, pizza, gelato, and an enclosed grassy dog park with iron fencing. Very popular on weekends.", status:"published" },
@@ -106,4 +115,9 @@ function showLoading(show) {
 
 function showError(show) {
   document.getElementById("errorState").classList.toggle("hidden", !show);
+}
+
+function getThumbnail(place) {
+  // Use sheet photo_url if available, fall back to hardcoded map
+  return place.photo_url || PLACE_THUMBNAILS[String(place.id)] || null;
 }
