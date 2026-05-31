@@ -56,7 +56,7 @@ function submitPlace(params) {
     ]);
 
     // Optional: send email notification to admin
-    // MailApp.sendEmail("your@email.com", "New PawJakarta submission: " + params.name, JSON.stringify(params, null, 2));
+    // MailApp.sendEmail("ivanafandi88@gmail.com", "New PawJakarta submission: " + params.name, JSON.stringify(params, null, 2));
 
     return ContentService
       .createTextOutput(JSON.stringify({ ok: true, message: "Submission received!" }))
