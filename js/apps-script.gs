@@ -1,70 +1,70 @@
 /**
- * PawJakarta — Google Apps Script
+ * PawJakarta — Google Apps Script v2
  * ─────────────────────────────────────────────────────────────────────
  * HOW TO DEPLOY:
  * 1. Open your Google Sheet
  * 2. Go to Extensions → Apps Script
- * 3. Paste this entire file into the editor (replace any existing code)
+ * 3. Paste this entire file (replace existing code)
  * 4. Save (Ctrl+S)
- * 5. Click Deploy → New deployment
- *    - Type: Web app
- *    - Execute as: Me
- *    - Who has access: Anyone
- * 6. Click Deploy → copy the Web App URL
- * 7. Paste that URL into js/config.js as APPS_SCRIPT_URL
- * ─────────────────────────────────────────────────────────────────────
+ * 5. Deploy → New deployment → Web app
+ *    Execute as: Me | Who has access: Anyone
+ * 6. Copy the Web App URL → paste into js/config.js as APPS_SCRIPT_URL
  *
- * SHEET STRUCTURE (Row 1 must be exactly these headers):
- *   id | name | area | type | address | hours | pet_size | rules | notes | status | submitted_at
+ * SHEET COLUMN HEADERS (Row 1, exact order):
+ *   id | name | area | type | address | hours | pet_size | rules | notes | photo_url | status | submitted_at
+ *
+ * IMPORTANT — type column values must be lowercase:
+ *   park | cafe | mall | restaurant | other
+ * ─────────────────────────────────────────────────────────────────────
  */
 
-const SHEET_NAME = "Sheet1"; // Change if your tab has a different name
+const SHEET_NAME = "Sheet1";
 
 function doGet(e) {
   const action = e.parameter.action;
-
-  if (action === "submitPlace") {
-    return submitPlace(e.parameter);
-  }
-
-  return ContentService
-    .createTextOutput(JSON.stringify({ error: "Unknown action" }))
-    .setMimeType(ContentService.MimeType.JSON);
+  if (action === "submitPlace") return submitPlace(e.parameter);
+  return json({ error: "Unknown action" });
 }
 
 function submitPlace(params) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss  = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = ss.getSheetByName(SHEET_NAME);
+    const newId = sheet.getLastRow(); // row 1 = headers, so this = next numeric id
 
-    // Get next ID
-    const lastRow = sheet.getLastRow();
-    const newId = lastRow; // Row 1 = headers, so lastRow = last data row index = new id
+    // Normalise type to lowercase so it always resolves in TYPE_META
+    const type = (params.type || "other").toLowerCase().trim();
 
     sheet.appendRow([
       newId,
-      params.name || "",
-      params.area || "",
-      params.type || "",
-      params.address || "",
-      params.hours || "",
-      params.pet_size || "All sizes",
-      params.rules || "",
-      params.notes || "",
-      "pending",          // status — admin reviews before changing to "published"
+      params.name         || "",
+      params.area         || "",
+      type,
+      params.address      || "",
+      params.hours        || "",
+      params.pet_size     || "All sizes",
+      params.rules        || "",
+      params.notes        || "",
+      params.photo_url    || "",   // ← new column
+      "pending",                   // status — change to "published" to go live
       params.submitted_at || new Date().toISOString(),
     ]);
 
-    // Optional: send email notification to admin
-    // MailApp.sendEmail("ivanafandi88@gmail.com", "New PawJakarta submission: " + params.name, JSON.stringify(params, null, 2));
+    // Optional: email notification
+    // MailApp.sendEmail(
+    //   "your@email.com",
+    //   "New PawJakarta submission: " + params.name,
+    //   "Name: " + params.name + "\nArea: " + params.area + "\nType: " + type
+    // );
 
-    return ContentService
-      .createTextOutput(JSON.stringify({ ok: true, message: "Submission received!" }))
-      .setMimeType(ContentService.MimeType.JSON);
-
+    return json({ ok: true, message: "Submission received! We'll review and publish it shortly." });
   } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ ok: false, message: err.message }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return json({ ok: false, message: err.message });
   }
+}
+
+function json(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
 }

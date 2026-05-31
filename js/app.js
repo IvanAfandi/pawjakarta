@@ -111,7 +111,7 @@ function openModal(id) {
   const meta = getTypeMeta(place.type);
   const rules = rulesArr(place.rules);
   const open = isLikelyOpen();
-  const thumb = getThumbnail(p);
+  const thumb = getThumbnail(place);
 
   document.getElementById("modalBody").innerHTML = `
     ${thumb ? `<div class="modal-thumb"><img src="${thumb}" alt="${san(place.name)}" /></div>` : ""}
