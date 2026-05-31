@@ -52,7 +52,7 @@ function submitPlace(params) {
 
     // Optional: email notification
     // MailApp.sendEmail(
-    //   "your@email.com",
+    //   "ivanafandi88@gmail.com",
     //   "New PawJakarta submission: " + params.name,
     //   "Name: " + params.name + "\nArea: " + params.area + "\nType: " + type
     // );
